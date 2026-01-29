@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter.filedialog import *
 root=Tk()
 dictionary={}
 def deletee():
@@ -14,14 +15,40 @@ def update():
         if nm not in dictionary.keys():
             listbox.insert(END,nm)
             dictionary[nm]=[adress1.get(),mobile1.get(),email1.get(),birthday1.get()]
-            print(dictionary)
             deletee()
     else:
         messagebox.showerror("ERROR",'Please add a name')
-def deltedic():
+def deletedic():
     mouse=listbox.curselection()
-    mouse=listbox.get(mouse)
+    if mouse:
+        mous=listbox.get(mouse)
+        del dictionary[mous]
+        listbox.delete(mouse)
+    else:
+        messagebox.showerror('error','Nothing is selected')
+def saveas():
+    saved=asksaveasfile(defaultextension='.txt')
+    if saved:
+        print(dictionary,file=saved)
+        listbox.delete(0,END)
+        dictionary.clear()
+    else:
+        messagebox.showerror('ERROR','Please write in the file before trying to save')
+def openfile():
+    fileopen=askopenfile(title='openfile')
+    if fileopen:
+        global dictionary
+        dictionary=eval(fileopen.read())
+        for i in dictionary.keys():
+            listbox.insert(END,i)
+    else:
+        messagebox.showerror('ERROR','Select A Valid File')
+
+def editfile():
     
+
+
+
 
 
 
@@ -39,9 +66,9 @@ email=Label(frame,text='EMAIL:')
 email.pack(pady=30)
 birthday=Label(frame,text='BIRTHDAY:')
 birthday.pack(pady=30)
-save=Button(frame,text='SAVE')
+save=Button(frame,text='SAVE',command=saveas)
 save.pack(pady=60)
-open=Button(root,text='OPEN')
+open=Button(root,text='OPEN',command=openfile)
 open.place(x=175,y=0)
 frame1=Frame(root)
 frame1.place(x=325,y=0)
@@ -65,6 +92,9 @@ listbox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listbox.yview)
 edit=Button(root,text='EDIT')
 edit.place(y=400,x=50)
-delete=Button(root,text='DELETE')
+delete=Button(root,text='DELETE',command=deletedic)
 delete.place(y=400,x=150)
+
+
+
 root.mainloop()
