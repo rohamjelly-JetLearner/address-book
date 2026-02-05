@@ -14,8 +14,8 @@ def update():
     if nm != '' :
         if nm not in dictionary.keys():
             listbox.insert(END,nm)
-            dictionary[nm]=[adress1.get(),mobile1.get(),email1.get(),birthday1.get()]
-            deletee()
+        dictionary[nm]=[adress1.get(),mobile1.get(),email1.get(),birthday1.get()]
+        deletee()
     else:
         messagebox.showerror("ERROR",'Please add a name')
 def deletedic():
@@ -32,6 +32,7 @@ def saveas():
         print(dictionary,file=saved)
         listbox.delete(0,END)
         dictionary.clear()
+        deletee()
     else:
         messagebox.showerror('ERROR','Please write in the file before trying to save')
 def openfile():
@@ -45,7 +46,26 @@ def openfile():
         messagebox.showerror('ERROR','Select A Valid File')
 
 def editfile():
+    name_key=listbox.curselection()
+    if name_key:
+        edit_key=listbox.get(name_key)
+        deletee()
+        name1.insert(0,edit_key)              
+        saved_detailes=dictionary[edit_key]
+        adress1.insert(0,saved_detailes[0])       
+        mobile1.insert(0,saved_detailes[1])
+        email1.insert(0,saved_detailes[2])
+        birthday1.insert(0,saved_detailes[3])
     
+def display(event):
+    newroot=Toplevel(root)
+    index=listbox.curselection()
+    details=''
+    if index:
+        index1=listbox.get(index)
+        index2=dictionary[index1]
+        details+=('NAME:   '+index1+'\n')
+
 
 
 
@@ -85,12 +105,13 @@ birthday1.pack(pady=30)
 upd=Button(frame1,text='UPDATE/ADD',command=update)
 upd.pack(pady=30)
 listbox=Listbox(root,bg='red',width=25,height=22)
+listbox.bind('<<LitboxSelect>>',display)
 scrollbar=Scrollbar(listbox,orient='vertical')
 listbox.place(x=0,y=0)
 #scrollbar.place(x=135,y=0)
 listbox.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=listbox.yview)
-edit=Button(root,text='EDIT')
+edit=Button(root,text='EDIT',command=editfile)
 edit.place(y=400,x=50)
 delete=Button(root,text='DELETE',command=deletedic)
 delete.place(y=400,x=150)
