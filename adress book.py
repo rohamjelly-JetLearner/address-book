@@ -64,7 +64,14 @@ def display(event):
     if index:
         index1=listbox.get(index)
         index2=dictionary[index1]
-        details+=('NAME:   '+index1+'\n')
+        details+=('NAME:       '+index1+'\n')
+        details+=('ADRESS:     '+index2[0]+'\n')
+        details+=('EMAIL:      '+index2[1]+'\n')
+        details+=('MOBILE:     '+index2[2]+'\n')
+        details+=('BIRTHDAY:   '+index2[3]+'\n')
+        lbl=Label(newroot,text=details)
+        lbl.pack()
+
 
 
 
@@ -105,7 +112,7 @@ birthday1.pack(pady=30)
 upd=Button(frame1,text='UPDATE/ADD',command=update)
 upd.pack(pady=30)
 listbox=Listbox(root,bg='red',width=25,height=22)
-listbox.bind('<<LitboxSelect>>',display)
+listbox.bind('<<ListboxSelect>>',display)
 scrollbar=Scrollbar(listbox,orient='vertical')
 listbox.place(x=0,y=0)
 #scrollbar.place(x=135,y=0)
@@ -115,7 +122,6 @@ edit=Button(root,text='EDIT',command=editfile)
 edit.place(y=400,x=50)
 delete=Button(root,text='DELETE',command=deletedic)
 delete.place(y=400,x=150)
-
 
 
 root.mainloop()
